@@ -91,6 +91,10 @@ type vendor_persist_oplus_touch_file, file_type, data_file_type;
 # Torch
 type sysfs_torch, fs_type, sysfs_type;
 
+# PowerTools - GPU frequency control
+type sysfs_kgsl_gpuclk, fs_type, sysfs_type;
+type sysfs_thermal_powertools, fs_type, sysfs_type;
+
 # Ultrasound
 type vendor_proc_ultrasound, fs_type, proc_type;
 
