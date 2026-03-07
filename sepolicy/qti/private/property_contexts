@@ -12,6 +12,7 @@ persist.sys.oplus.autotest.    u:object_r:exported_system_prop:s0
 # Bluetooth
 persist.bluetooth.a2dp_aac_abr.enable   u:object_r:exported_bluetooth_prop:s0
 persist.sys.bt.a2dp.pendingtime    u:object_r:exported_system_prop:s0
+bluetooth.device_id.vendor_id     u:object_r:exported_bluetooth_prop:s0 exact int
 
 # Camera
 cam.algo.                        u:object_r:exported_system_prop:s0
