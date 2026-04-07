@@ -205,6 +205,16 @@ class AlertSliderDialog(private val context: Context) :
             }
         )
         textView.setTextColor(context.getColor(R.color.alert_slider_text_color))
+
+        // In landscape, hide text and shrink to icon-only popup
+        if (isLandscape) {
+            textView.visibility = android.view.View.GONE
+            val lp = frameView.layoutParams
+            lp.width = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            frameView.layoutParams = lp
+        } else {
+            textView.visibility = android.view.View.VISIBLE
+        }
     }
 
     private fun applyPositionAndBackground(endX: Int, endY: Int, position: Int) {

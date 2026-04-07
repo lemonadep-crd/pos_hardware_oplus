@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2024 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Toast message when attempting to map the same action to multiple slider positions -->
+    <string name="alert_slider_action_already_mapped">Action already mapped to another position</string>
+</resources>
