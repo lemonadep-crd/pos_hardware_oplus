@@ -15,6 +15,7 @@ import android.media.AudioSystem
 import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.os.UserHandle
 import android.provider.Settings
 import android.view.KeyEvent
 import com.android.internal.os.DeviceKeyHandler
@@ -32,7 +33,7 @@ class KeyHandler(private val context: Context) : DeviceKeyHandler {
         get() =
             packageContext.getSharedPreferences(
                 packageContext.packageName + "_preferences",
-                Context.MODE_PRIVATE or Context.MODE_MULTI_PROCESS,
+                Context.MODE_PRIVATE,
             )
 
     private val executorService = Executors.newSingleThreadExecutor()
@@ -160,11 +161,12 @@ class KeyHandler(private val context: Context) : DeviceKeyHandler {
     }
 
     private fun sendNotification(position: Int, mode: Int) {
-        context.sendBroadcast(
+        context.sendBroadcastAsUser(
             Intent(CHANGED_ACTION).apply {
                 putExtra("position", position)
                 putExtra("mode", mode)
-            }
+            },
+            UserHandle.CURRENT
         )
     }
 

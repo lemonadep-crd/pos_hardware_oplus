@@ -18,36 +18,48 @@
 
     <LinearLayout
         android:id="@+id/alert_slider_view"
-        android:layout_width="@dimen/alert_slider_dialog_width"
-        android:layout_height="@dimen/alert_slider_dialog_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|right"
         android:orientation="horizontal"
+        android:paddingStart="@dimen/alert_slider_padding"
         android:paddingEnd="@dimen/alert_slider_padding"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:minHeight="48dp"
+        android:gravity="center_vertical"
         android:translationZ="@dimen/alert_slider_elevation">
 
         <FrameLayout
-            android:layout_width="@dimen/alert_slider_dialog_icon_width"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/alert_slider_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/alert_slider_emoji_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/alert_slider_margin"
-                android:tint="?android:attr/colorAccent" />
+                android:textSize="22sp"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView
             android:id="@+id/alert_slider_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
             android:fontFamily="@*android:string/config_headlineFontFamilyMedium"
             android:gravity="center_vertical"
             android:textColor="?android:attr/textColorPrimary"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="10sp"
-            android:autoSizeMaxTextSize="@dimen/alert_slider_text_size"
+            android:textSize="@dimen/alert_slider_text_size"
             android:scrollHorizontally="true"
             android:ellipsize="marquee"
             android:lines="1" />

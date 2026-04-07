@@ -15,7 +15,7 @@
     <dimen name="alert_slider_dialog_width">116dp</dimen>
     <dimen name="alert_slider_dialog_icon_width">54dp</dimen>
     <dimen name="alert_slider_elevation">9dp</dimen>
-    <dimen name="alert_slider_text_size">11sp</dimen>
+    <dimen name="alert_slider_text_size">14sp</dimen>
     <dimen name="alert_slider_directional_radius">4dp</dimen>
     <dimen name="alert_slider_corner_radius">28dp</dimen>
 </resources>

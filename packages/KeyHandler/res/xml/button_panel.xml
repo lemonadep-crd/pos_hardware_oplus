@@ -49,5 +49,38 @@
             android:summary="@string/alert_slider_notification_dialog_summary"
             android:defaultValue="true" />
 
+        <SwitchPreferenceCompat
+            android:key="config_alert_slider_island"
+            android:title="@string/alert_slider_island_title"
+            android:summary="@string/alert_slider_island_summary"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="config_alert_slider_glass"
+            android:title="@string/alert_slider_glass_title"
+            android:summary="@string/alert_slider_glass_summary"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="config_alert_slider_hide_label"
+            android:title="@string/alert_slider_hide_label_title"
+            android:summary="@string/alert_slider_hide_label_summary"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            android:key="config_emoji_top"
+            android:title="@string/alert_slider_emoji_top_title"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="config_emoji_middle"
+            android:title="@string/alert_slider_emoji_middle_title"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="config_emoji_bottom"
+            android:title="@string/alert_slider_emoji_bottom_title"
+            android:defaultValue="" />
+
     </PreferenceCategory>
 </PreferenceScreen>
