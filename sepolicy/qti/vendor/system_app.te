@@ -7,6 +7,7 @@ r_dir_file(system_app, vendor_sysfs_sde_crtc)
 # Touchpanel
 rw_dir_file(system_app, vendor_proc_display)
 
+# PowerTools
 # PowerTools - CPU frequency/governor control
 allow system_app sysfs_devices_system_cpu:dir r_dir_perms;
 allow system_app sysfs_devices_system_cpu:{ file lnk_file } rw_file_perms;
@@ -36,13 +37,3 @@ rw_dir_file(system_app, sysfs_vibrator)
 
 # Zram
 r_dir_file(system_app, sysfs_zram)
-
-# System Monitor Widget - /proc/stat (CPU usage)
-allow system_app proc_stat:file { read open getattr };
-
-# System Monitor Widget - GPU devfreq cur_freq/max_freq
-allow system_app vendor_sysfs_kgsl:dir r_dir_perms;
-allow system_app vendor_sysfs_kgsl:{ file lnk_file } r_file_perms;
-
-# System Monitor Widget - /proc/meminfo (swap stats)
-allow system_app proc_meminfo:file { read open getattr };
