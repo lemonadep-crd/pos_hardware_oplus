@@ -7,6 +7,5 @@ dontaudit untrusted_app ashmem_device:chr_file open;
 dontaudit init system_file:{ dir file lnk_file } relabelfrom;
 dontaudit init system_lib_file:file relabelfrom;
 
-# Silence init getattr on Zygisk module sock_file and LSPosed dex2oat
+# Silence init getattr on Zygisk module sock_file
 dontaudit init system_file:sock_file getattr;
-dontaudit init dex2oat_exec:file getattr;

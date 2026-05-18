@@ -1,5 +1,6 @@
-# Allow installd to clean up app directories under /data/media/
-# during app uninstall and update operations. Without these rules,
-# orphan .vdex files and empty directories accumulate on storage.
-allow installd media_userdir_file:dir { write remove_name rmdir };
-allow installd media_userdir_file:file { unlink getattr };
+# Silence installd denials for media_userdir_file cleanup.
+# AOSP vold.te neverallow blocks 'allow' rules for write/remove_name
+# on media_userdir_file, so we use dontaudit to suppress log noise.
+dontaudit installd media_userdir_file:dir { write remove_name rmdir };
+dontaudit installd media_userdir_file:file { unlink getattr };
+ 
