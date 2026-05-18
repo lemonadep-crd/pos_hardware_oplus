@@ -10,3 +10,7 @@ set_prop(vendor_init, vendor_ims_prop)
 
 # Bluetooth
 set_prop(vendor_init, exported_bluetooth_prop)
+
+# Allow vendor_init to set attributes on rawdump block device symlink
+# for kernel crash dump collection
+allow vendor_init block_device:lnk_file setattr;

@@ -21,7 +21,6 @@ import android.provider.Settings
 import android.view.Gravity
 import android.view.Surface
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.view.animation.OvershootInterpolator
@@ -99,17 +98,33 @@ class AlertSliderDialog(private val context: Context) :
         edgeYPos = (heightPixels * fraction - hv).toInt()
     }
 
+    fun refreshBlur() {
+        val resolver = context.contentResolver
+        val blurPopup = Settings.System.getInt(resolver, "config_alert_slider_glass", 0) != 0
+        window?.let { win ->
+            val lp = win.attributes
+            if (blurPopup) {
+                lp.blurBehindRadius = 75
+                lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
+            } else {
+                lp.blurBehindRadius = 0
+                lp.flags = lp.flags and WindowManager.LayoutParams.FLAG_BLUR_BEHIND.inv()
+            }
+            win.attributes = lp
+        }
+    }
+
     fun setState(position: Int, ringerMode: Int) {
         val resolver = context.contentResolver
         val islandMode = Settings.System.getInt(resolver, "config_alert_slider_island", 0) != 0
-        val glassMode = Settings.System.getInt(resolver, "config_alert_slider_glass", 0) != 0
+        val blurPopup = Settings.System.getInt(resolver, "config_alert_slider_glass", 0) != 0
         val hideLabel = Settings.System.getInt(resolver, "config_alert_slider_hide_label", 0) != 0
 
         // === Positioning — recalculated on every setState so toggles take immediate effect ===
         window?.let { win ->
             win.attributes = win.attributes.apply {
-                // Update blur flag based on current glass setting
-                if (glassMode) {
+                // Update blur flag based on current blur popup setting
+                if (blurPopup) {
                     blurBehindRadius = 75
                     flags = flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
                 } else {
@@ -152,10 +167,10 @@ class AlertSliderDialog(private val context: Context) :
             }
         }
 
-        // === Background: Glassmorphism or system color ===
+        // === Background: Blur popup or system color ===
         val bgDrawable = dialogView.background as? android.graphics.drawable.GradientDrawable
         if (bgDrawable != null) {
-            if (glassMode) {
+            if (blurPopup) {
                 bgDrawable.setColor(Color.argb(102, 30, 30, 30))
             } else {
                 val ta = context.obtainStyledAttributes(intArrayOf(android.R.attr.colorBackgroundFloating))

@@ -1,1 +1,4 @@
 get_prop(vendor_vppservice, vendor_display_prop)
+
+# Allow VPP service to read FastRPC DSP shell (fastrpc_shell_3)
+allow vendor_vppservice mnt_vendor_file:file read;

@@ -1,1 +1,12 @@
 dontaudit untrusted_app ashmem_device:chr_file open;
+
+# Silence ZygiskNext / ReZygisk / LSPosed boot relabel denials (402 total).
+# During boot, init tries to relabel module files under /data/adb/modules/
+# which are labeled system_file / system_lib_file. These relabel attempts
+# fail silently — the modules function regardless via alternative paths.
+dontaudit init system_file:{ dir file lnk_file } relabelfrom;
+dontaudit init system_lib_file:file relabelfrom;
+
+# Silence init getattr on Zygisk module sock_file and LSPosed dex2oat
+dontaudit init system_file:sock_file getattr;
+dontaudit init dex2oat_exec:file getattr;

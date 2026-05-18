@@ -11,7 +11,7 @@
     <string name="alert_slider_island_title">Dynamic Island Style</string>
     <string name="alert_slider_island_summary">Show popup just below the status bar, centered at the top</string>
 
-    <string name="alert_slider_glass_title">Glassmorphism Effect</string>
+    <string name="alert_slider_glass_title">Blur Popup</string>
     <string name="alert_slider_glass_summary">Blur the area behind the popup for a frosted glass look</string>
 
     <string name="alert_slider_emoji_top_title">Top Position Emoji</string>

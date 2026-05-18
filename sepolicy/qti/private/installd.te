@@ -1,0 +1,5 @@
+# Allow installd to clean up app directories under /data/media/
+# during app uninstall and update operations. Without these rules,
+# orphan .vdex files and empty directories accumulate on storage.
+allow installd media_userdir_file:dir { write remove_name rmdir };
+allow installd media_userdir_file:file { unlink getattr };

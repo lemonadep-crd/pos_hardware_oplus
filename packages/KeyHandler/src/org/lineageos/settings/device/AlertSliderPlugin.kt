@@ -98,9 +98,12 @@ class AlertSliderPlugin : OverlayPlugin {
                             handleResetTimeout()
                             launchDozePulse()
                             dialog.show()
+                            dialog.refreshBlur()
                         } else {
                             dialog.dismiss()
                         }
+                    } else if (value) {
+                        dialog.refreshBlur()
                     }
 
                     field = value
