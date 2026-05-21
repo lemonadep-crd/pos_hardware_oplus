@@ -8,9 +8,8 @@
 
 package org.lineageos.settings.device
 
-import android.animation.Animator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -40,19 +39,14 @@ class AlertSliderDialog(private val context: Context) :
     private val isLandscape = rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270
     private val flip = context.resources.getBoolean(R.bool.alert_slider_dialog_left)
 
-    // Status bar height (used to place popup just below it)
     private val statusBarHeight: Int by lazy {
         val resId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resId > 0) context.resources.getDimensionPixelSize(resId) else 96
     }
 
-    // Edge position calculations (portrait, non-island mode)
     private val length: Int
     private val edgeXPos: Int
     private val edgeYPos: Int
-
-    private var isAnimating = false
-    private var animator = ValueAnimator()
 
     init {
         window?.let {
@@ -81,7 +75,6 @@ class AlertSliderDialog(private val context: Context) :
         setCanceledOnTouchOutside(false)
         setContentView(R.layout.alert_slider_dialog)
 
-        // Pre-calculate edge positioning values
         val res = context.resources
         val fraction = res.getFraction(R.fraction.alert_slider_dialog_y, 1, 1)
         val widthPixels = res.displayMetrics.widthPixels
@@ -99,19 +92,7 @@ class AlertSliderDialog(private val context: Context) :
     }
 
     fun refreshBlur() {
-        val resolver = context.contentResolver
-        val blurPopup = Settings.System.getInt(resolver, "config_alert_slider_glass", 0) != 0
-        window?.let { win ->
-            val lp = win.attributes
-            if (blurPopup) {
-                lp.blurBehindRadius = 75
-                lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
-            } else {
-                lp.blurBehindRadius = 0
-                lp.flags = lp.flags and WindowManager.LayoutParams.FLAG_BLUR_BEHIND.inv()
-            }
-            win.attributes = lp
-        }
+        // No-op: blur is handled via background alpha only
     }
 
     fun setState(position: Int, ringerMode: Int) {
@@ -120,33 +101,23 @@ class AlertSliderDialog(private val context: Context) :
         val blurPopup = Settings.System.getInt(resolver, "config_alert_slider_glass", 0) != 0
         val hideLabel = Settings.System.getInt(resolver, "config_alert_slider_hide_label", 0) != 0
 
-        // === Positioning — recalculated on every setState so toggles take immediate effect ===
         window?.let { win ->
             win.attributes = win.attributes.apply {
-                // Update blur flag based on current blur popup setting
-                if (blurPopup) {
-                    blurBehindRadius = 75
-                    flags = flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
-                } else {
-                    blurBehindRadius = 0
-                    flags = flags and WindowManager.LayoutParams.FLAG_BLUR_BEHIND.inv()
-                }
+                blurBehindRadius = 0
+                flags = flags and WindowManager.LayoutParams.FLAG_BLUR_BEHIND.inv()
 
                 when {
                     islandMode -> {
-                        // Island mode: top-center, just below the status bar
                         gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
                         x = 0
-                        y = statusBarHeight + 8 // 8px gap below status bar
+                        y = statusBarHeight + 8
                     }
                     isLandscape -> {
-                        // Landscape: always top-center, no position shift per-mode
                         gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
                         x = 0
                         y = statusBarHeight + 8
                     }
                     else -> {
-                        // Portrait edge mode: shift position per slider position
                         val delta = length * when (position) {
                             KeyHandler.POSITION_TOP -> -1
                             KeyHandler.POSITION_BOTTOM -> 1
@@ -167,7 +138,6 @@ class AlertSliderDialog(private val context: Context) :
             }
         }
 
-        // === Background: Blur popup or system color ===
         val bgDrawable = dialogView.background as? android.graphics.drawable.GradientDrawable
         if (bgDrawable != null) {
             if (blurPopup) {
@@ -179,7 +149,7 @@ class AlertSliderDialog(private val context: Context) :
             }
         }
 
-        // === Emoji: 2 Unicode codepoints max ===
+        // Check if user set a custom emoji for this position
         val emojiKey = when (position) {
             KeyHandler.POSITION_TOP -> "config_emoji_top"
             KeyHandler.POSITION_MIDDLE -> "config_emoji_middle"
@@ -193,10 +163,12 @@ class AlertSliderDialog(private val context: Context) :
         }
 
         if (!emoji.isNullOrEmpty()) {
+            // Custom emoji set — show emoji, no animation needed
             emojiView.text = emoji
             emojiView.visibility = View.VISIBLE
             iconView.visibility = View.GONE
         } else {
+            // Default icon mode
             emojiView.visibility = View.GONE
             iconView.visibility = View.VISIBLE
             iconView.setImageResource(
@@ -210,9 +182,13 @@ class AlertSliderDialog(private val context: Context) :
                     else -> R.drawable.ic_info
                 }
             )
+
+            // Animate the icon only in icon-only mode (hideLabel ON, no emoji)
+            if (hideLabel) {
+                animateIcon(iconView)
+            }
         }
 
-        // === Text label: only hidden when user explicitly enables "Hide Text Label" ===
         if (hideLabel) {
             textView.visibility = View.GONE
         } else {
@@ -226,6 +202,25 @@ class AlertSliderDialog(private val context: Context) :
                 KeyHandler.ZEN_ALARMS_ONLY -> "Alarms Only"
                 else -> "None"
             }
+        }
+    }
+
+    private fun animateIcon(view: ImageView) {
+        view.scaleX = 0.3f
+        view.scaleY = 0.3f
+        view.alpha = 0f
+        view.rotation = -45f
+
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.3f, 1.2f, 0.95f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.3f, 1.2f, 0.95f, 1f)
+        val alpha = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
+        val rot = ObjectAnimator.ofFloat(view, "rotation", -45f, 12f, -5f, 0f)
+
+        AnimatorSet().apply {
+            playTogether(scaleX, scaleY, alpha, rot)
+            duration = 500
+            interpolator = OvershootInterpolator(1.2f)
+            start()
         }
     }
 
