@@ -177,6 +177,9 @@
 /dev/ssc_interactive                                                          u:object_r:ssc_interactive_device:s0
 /vendor/bin/hw/android\.hardware\.sensors-service\.oplus-multihal             u:object_r:hal_sensors_default_exec:s0
 
+# Thermal HAL
+/vendor/bin/hw/android\.hardware\.thermal-service\.pixel    u:object_r:hal_thermal_default_exec:s0
+
 # Spunvm
 /dev/block/platform/soc/1d84000\.ufshc/by-name/spunvm    u:object_r:vendor_efs_boot_dev:s0
 

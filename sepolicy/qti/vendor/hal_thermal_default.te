@@ -1,3 +1,9 @@
 allow hal_thermal_default sysfs_thermal_powertools:dir search;
 
 allow hal_thermal_default sysfs_thermal_powertools:file r_file_perms;
+
+# Genetlink
+allow hal_thermal_default self:netlink_generic_socket create_socket_perms_no_ioctl;
+
+# Power HAL
+hal_client_domain(hal_thermal_default, hal_power)
