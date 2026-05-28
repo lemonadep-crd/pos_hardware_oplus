@@ -15,7 +15,6 @@ import android.media.AudioSystem
 import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.os.UserHandle
 import android.provider.Settings
 import android.view.KeyEvent
 import com.android.internal.os.DeviceKeyHandler
@@ -29,11 +28,12 @@ class KeyHandler(private val context: Context) : DeviceKeyHandler {
 
     private val packageContext =
         context.createPackageContext(KeyHandler::class.java.getPackage()!!.name, 0)
+    @Suppress("DEPRECATION")
     private val sharedPreferences
         get() =
             packageContext.getSharedPreferences(
                 packageContext.packageName + "_preferences",
-                Context.MODE_PRIVATE,
+                Context.MODE_PRIVATE or Context.MODE_MULTI_PROCESS,
             )
 
     private val executorService = Executors.newSingleThreadExecutor()
@@ -100,17 +100,32 @@ class KeyHandler(private val context: Context) : DeviceKeyHandler {
         }
     }
 
+    /**
+     * Read a slider string setting from Settings.System first (real-time,
+     * cross-process safe), falling back to SharedPreferences for backwards
+     * compatibility on first boot before ButtonSettingsFragment has synced.
+     */
+    private fun getSliderSetting(key: String, defValue: String): String {
+        val sysVal = Settings.System.getString(context.contentResolver, key)
+        if (sysVal != null) return sysVal
+        return sharedPreferences.getString(key, defValue) ?: defValue
+    }
+
+    private fun getSliderBoolSetting(key: String, defValue: Boolean): Boolean {
+        val sysVal = Settings.System.getInt(context.contentResolver, key, -1)
+        if (sysVal != -1) return sysVal != 0
+        return sharedPreferences.getBoolean(key, defValue)
+    }
+
     private fun handleMode(position: Int, firstRun: Boolean) {
-        val muteMedia = sharedPreferences.getBoolean(MUTE_MEDIA_WITH_SILENT, false)
-        val showDialog = sharedPreferences.getBoolean(SHOW_DIALOG, true)
+        val muteMedia = getSliderBoolSetting(MUTE_MEDIA_WITH_SILENT, false)
+        val showDialog = getSliderBoolSetting(SHOW_DIALOG, true)
 
         val mode =
             when (position) {
-                POSITION_TOP -> sharedPreferences.getString(ALERT_SLIDER_TOP_KEY, "0")!!.toInt()
-                POSITION_MIDDLE ->
-                    sharedPreferences.getString(ALERT_SLIDER_MIDDLE_KEY, "1")!!.toInt()
-                POSITION_BOTTOM ->
-                    sharedPreferences.getString(ALERT_SLIDER_BOTTOM_KEY, "2")!!.toInt()
+                POSITION_TOP -> getSliderSetting(ALERT_SLIDER_TOP_KEY, "0").toInt()
+                POSITION_MIDDLE -> getSliderSetting(ALERT_SLIDER_MIDDLE_KEY, "1").toInt()
+                POSITION_BOTTOM -> getSliderSetting(ALERT_SLIDER_BOTTOM_KEY, "2").toInt()
                 else -> return
             }
 
@@ -161,12 +176,11 @@ class KeyHandler(private val context: Context) : DeviceKeyHandler {
     }
 
     private fun sendNotification(position: Int, mode: Int) {
-        context.sendBroadcastAsUser(
+        context.sendBroadcast(
             Intent(CHANGED_ACTION).apply {
                 putExtra("position", position)
                 putExtra("mode", mode)
-            },
-            UserHandle.CURRENT
+            }
         )
     }
 

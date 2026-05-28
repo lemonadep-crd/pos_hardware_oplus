@@ -2,16 +2,52 @@
 <!--
     SPDX-FileCopyrightText: 2025 The Android Open Source Project
     SPDX-License-Identifier: Apache-2.0
+    Groups added for AnimatedVectorDrawable targeting.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="20dp"
     android:height="20dp"
     android:viewportWidth="20"
     android:viewportHeight="20">
-    <group>
-        <clip-path android:pathData="M0,0h20v20h-20z" />
+    <clip-path android:pathData="M0,0h20v20h-20z" />
+    <!-- Left outer bar (bar 1): x=0, y=7.5 to 12.5, w=1.5 -->
+    <group
+        android:name="left_outer"
+        android:pivotX="0.75"
+        android:pivotY="10">
         <path
             android:fillColor="@color/alert_slider_icon_color"
-            android:pathData="M0,12.5V7.5H1.5V12.5H0ZM2.5,14V6H4V14H2.5ZM18.5,12.5V7.5H20V12.5H18.5ZM16,14V6H17.5V14H16ZM6.5,17C6.083,17 5.729,16.854 5.438,16.563C5.146,16.271 5,15.917 5,15.5V4.5C5,4.083 5.146,3.729 5.438,3.438C5.729,3.146 6.083,3 6.5,3H13.5C13.917,3 14.271,3.146 14.563,3.438C14.854,3.729 15,4.083 15,4.5V15.5C15,15.917 14.854,16.271 14.563,16.563C14.271,16.854 13.917,17 13.5,17H6.5Z" />
+            android:pathData="M0,12.5V7.5H1.5V12.5H0Z" />
     </group>
+    <!-- Left inner bar (bar 2): x=2.5, y=6 to 14, w=1.5 -->
+    <group
+        android:name="left_inner"
+        android:pivotX="3.25"
+        android:pivotY="10">
+        <path
+            android:fillColor="@color/alert_slider_icon_color"
+            android:pathData="M2.5,14V6H4V14H2.5Z" />
+    </group>
+    <!-- Right outer bar (bar 4): x=18.5, y=7.5 to 12.5, w=1.5 -->
+    <group
+        android:name="right_outer"
+        android:pivotX="19.25"
+        android:pivotY="10">
+        <path
+            android:fillColor="@color/alert_slider_icon_color"
+            android:pathData="M18.5,12.5V7.5H20V12.5H18.5Z" />
+    </group>
+    <!-- Right inner bar (bar 3): x=16, y=6 to 14, w=1.5 -->
+    <group
+        android:name="right_inner"
+        android:pivotX="16.75"
+        android:pivotY="10">
+        <path
+            android:fillColor="@color/alert_slider_icon_color"
+            android:pathData="M16,14V6H17.5V14H16Z" />
+    </group>
+    <!-- Phone body: static, always visible -->
+    <path
+        android:fillColor="@color/alert_slider_icon_color"
+        android:pathData="M6.5,17C6.083,17 5.729,16.854 5.438,16.563C5.146,16.271 5,15.917 5,15.5V4.5C5,4.083 5.146,3.729 5.438,3.438C5.729,3.146 6.083,3 6.5,3H13.5C13.917,3 14.271,3.146 14.563,3.438C14.854,3.729 15,4.083 15,4.5V15.5C15,15.917 14.854,16.271 14.563,16.563C14.271,16.854 13.917,17 13.5,17H6.5Z" />
 </vector>

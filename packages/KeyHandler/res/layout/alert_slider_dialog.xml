@@ -48,6 +48,15 @@
                 android:layout_gravity="center"
                 android:textSize="22sp"
                 android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/alert_slider_lottie_view"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView

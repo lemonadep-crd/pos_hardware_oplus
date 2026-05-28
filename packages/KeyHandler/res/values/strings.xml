@@ -20,4 +20,13 @@
 
     <string name="alert_slider_hide_label_title">Hide Text Label</string>
     <string name="alert_slider_hide_label_summary">Only show the emoji/icon in the popup</string>
+
+    <!-- Custom emoji category -->
+    <string name="alert_slider_emoji_category_title">Custom Emoji \u0026 Animation</string>
+
+    <!-- Content description for add button -->
+    <string name="alert_slider_lottie_pick_desc">Pick custom animation file</string>
+
+    <!-- Help text for custom emoji -->
+    <string name="alert_slider_emoji_help">Type an emoji to replace the default icon, or tap the ＋ button to pick an animated WebP/Lottie file (max 512KB). Download animated emojis from googlefonts.github.io/noto-emoji-animation</string>
 </resources>

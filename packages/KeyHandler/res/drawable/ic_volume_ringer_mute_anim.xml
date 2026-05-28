@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_volume_ringer_mute">
+    <target android:name="mute_body">
+        <aapt:attr xmlns:aapt="http://schemas.android.com/aapt"
+            name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:propertyName="rotation"
+                    android:valueFrom="0" android:valueTo="-6"
+                    android:duration="60"
+                    android:interpolator="@android:interpolator/fast_out_slow_in" />
+                <objectAnimator
+                    android:propertyName="rotation"
+                    android:valueFrom="-6" android:valueTo="5"
+                    android:duration="80"
+                    android:interpolator="@android:interpolator/fast_out_slow_in" />
+                <objectAnimator
+                    android:propertyName="rotation"
+                    android:valueFrom="5" android:valueTo="-3"
+                    android:duration="90"
+                    android:interpolator="@android:interpolator/fast_out_slow_in" />
+                <objectAnimator
+                    android:propertyName="rotation"
+                    android:valueFrom="-3" android:valueTo="1.5"
+                    android:duration="100"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+                <objectAnimator
+                    android:propertyName="rotation"
+                    android:valueFrom="1.5" android:valueTo="0"
+                    android:duration="120"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="mute_slash">
+        <aapt:attr xmlns:aapt="http://schemas.android.com/aapt"
+            name="android:animation">
+            <objectAnimator
+                android:propertyName="trimPathEnd"
+                android:valueFrom="0.0" android:valueTo="1.0"
+                android:duration="350" android:valueType="floatType"
+                android:interpolator="@android:interpolator/fast_out_slow_in" />
+        </aapt:attr>
+    </target>
+</animated-vector>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2026 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+    Widget layout for the "+" button shown on the right side of each emoji
+    preference row. Clicking the widget opens a file picker for animated
+    WebP / Lottie JSON files.
+-->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_lottie_button"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:padding="12dp"
+    android:src="@android:drawable/ic_input_add"
+    android:tint="?android:attr/textColorSecondary"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:contentDescription="@string/alert_slider_lottie_pick_desc"
+    android:clickable="true"
+    android:focusable="true" />
